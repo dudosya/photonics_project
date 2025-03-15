@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_eye_diagram(waveform, samples_per_bit = 100, bit_rate = 200e6, num_bits = 100):
+def plot_eye_diagram(waveform, samples_per_bit , bit_rate, num_bits):
     eye_duration = 2 / bit_rate
     eye_samples =  3 * samples_per_bit
     eye_time = np.linspace(-1/bit_rate, 1/bit_rate, eye_samples)

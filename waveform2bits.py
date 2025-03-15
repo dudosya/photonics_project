@@ -10,6 +10,6 @@ def waveform2bits(waveform, samples_per_bit):
         elif mean_num < 0.5:
             output_bits.append(0)
             
-    return output_bits
+    return np.array(output_bits)
     
         
