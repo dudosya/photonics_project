@@ -75,6 +75,76 @@ def waveform2bits(waveform, samples_per_bit):
             output_bits.append(0)
             
     return np.array(output_bits)
+
+def chunk_list_comprehension(data, size):
+  """Chunks a list into smaller lists of a specified size using list comprehension."""
+  return [data[i : i + size] for i in range(0, len(data), size)]
+
+
+def find_signal_stats(data_stream, waveform, samples_per_bit):
+    # inputs: NRZ waveform, OG bits
+    # output: stats i.e. 4 nums
+
+    # examples:
+    # data_stream = [0,1,0,1]
+    # waveform: bunch of numbers
+
+    # 1 waveform gets chopped to intervals
+    waveform_list = chunk_list_comprehension(waveform, samples_per_bit)
+
+    # 2 for each interval stats are found
+    mean_wf_list = [np.mean(i) for i in waveform_list]
+    stdev_wf_list = [np.std(i) for i in waveform_list]
+
+    # 3 four lists are needed
+    # means for 0s and 1s, stdevs for 0s and 1s
+    mean_zeros_list = []
+    mean_ones_list = []
+    stdev_zeros_list = []
+    stdev_ones_list = []
+
+    for i,num in enumerate(data_stream):
+        if num == 1:
+            mean_ones_list.append(mean_wf_list[i])
+            stdev_ones_list.append(stdev_wf_list[i])
+        elif num == 0:
+            mean_zeros_list.append(mean_wf_list[i]) 
+            stdev_zeros_list.append(stdev_wf_list[i])
+        else:
+            print("There should be only 0s and 1s")
+
+    mean_zeros = np.mean(mean_zeros_list)
+    mean_ones = np.mean(mean_ones_list)
+    stdev_zeros = np.mean(stdev_zeros_list)
+    stdev_ones = np.mean(stdev_ones_list)
+
+    return mean_zeros, mean_ones, stdev_zeros, stdev_ones
+    
+def find_q_factor(mean_zeros, mean_ones, stdev_zeros, stdev_ones):
+    return (mean_ones - mean_zeros)/(stdev_ones+stdev_zeros)
+
+
+
+from scipy.special import erfc 
+
+def ber_estimation(q_factor):
+    return 100*0.5 * erfc(q_factor/np.sqrt(2))
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    from config import *
+    data_stream = generate_random_data(num_bits)
+    waveform = generate_NRZ_waveform(data_stream,samples_per_bit, num_bits, mean, stdev, gaussian_var)
+    mean_zeros, mean_ones, stdev_zeros, stdev_ones = find_signal_stats(data_stream, waveform, samples_per_bit)
+    q_factor = find_q_factor(mean_zeros, mean_ones, stdev_zeros, stdev_ones)
+    ber_estimation = ber_estimation(q_factor)
+    print(ber_estimation)
     
         
     

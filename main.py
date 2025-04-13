@@ -17,14 +17,14 @@ def experiment_eye_diagram():
 
 
 def experiment_ber_vs_stdev():
-    data_stream = generate_random_data(num_bits ,  seed)
+    data_stream = generate_random_data(num_bits, seed)
     plot_ber_vs_stdev(data_stream, samples_per_bit, num_bits, mean, stdev_list, gaussian_var)
 
 
 
 if __name__ == "__main__":
-    experiment_eye_diagram()
-    #experiment_ber_vs_stdev()
+    #experiment_eye_diagram()
+    experiment_ber_vs_stdev()
 
 
 
