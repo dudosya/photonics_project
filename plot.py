@@ -57,7 +57,7 @@ def plot_ber_vs_stdev(data_stream, samples_per_bit, num_bits, mean, stdev_list, 
     plt.plot(stdev_list, true_ber_list, marker='o', linestyle='-', color='blue', label='Measured BER')
     plt.plot(stdev_list, est_ber_list, marker='x', linestyle='--', color='red', label='Estimated BER (Q-factor)')
     plt.grid(True, which='both', linestyle=':', linewidth=0.5)
-    plt.ylabel("Bit Error Rate (BER)")
+    plt.ylabel("Bit Error Rate (BER) %")
     plt.xlabel("Standard Deviation of Additive Gaussian Noise ($\sigma$)")
     plt.title("Measured vs. Estimated BER vs. Noise Standard Deviation")
     plt.legend()
