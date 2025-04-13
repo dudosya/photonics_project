@@ -1,6 +1,24 @@
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
 
+def generate_random_data(num_bits=100, seed = 7):
+    """generate binary data stream
+
+    Args:
+        num_bits (int): number of bits to be generated. 
+        seed (int, optional): seed for reproducibility. 
+
+    Returns:
+        list: list of binary data of length num_bits
+    """
+    
+    if seed is not None:
+        rng = np.random.RandomState(seed)
+        return rng.randint(0,2,num_bits)
+    else:
+        return np.random.randint(0,2, num_bits)
+    
+
 def generate_NRZ_waveform(data_stream, samples_per_bit=100, num_bits=100, mean=0, stdev=0.01, gaussian_var=2):
     """
     Generates an NRZ waveform with added Gaussian noise and filtering.
@@ -32,4 +50,33 @@ def generate_NRZ_waveform(data_stream, samples_per_bit=100, num_bits=100, mean=0
 
     waveform = gaussian_filter1d(nrz, sigma=gaussian_var)
     return waveform
+
+
+def ber_calculator(original_data, received_data):
+    assert len(original_data) == len(received_data)
+    num_errors = 0
+    
+    for i in range(len(original_data)):
+        if original_data[i] != received_data[i]:  
+            num_errors += 1
+    
+    return 100*num_errors/len(original_data)
+
+
+
+def waveform2bits(waveform, samples_per_bit):
+    output_bits = []
+    
+    for i in range(int(len(waveform)/samples_per_bit)):
+        mean_num = np.mean(waveform[i*samples_per_bit:(i+1)*samples_per_bit])
+        if  mean_num > 0.5:
+            output_bits.append(1)
+        elif mean_num < 0.5:
+            output_bits.append(0)
+            
+    return np.array(output_bits)
+    
+        
+    
+
 
