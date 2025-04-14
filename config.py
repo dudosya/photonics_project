@@ -10,7 +10,7 @@ samples_per_bit = int(sampling_rate/bit_rate)
 total_time = num_bits * bit_duration
 time = np.linspace(0, total_time, num_bits * samples_per_bit)
 mean = 0
-stdev = 0.05
+stdev = 0.005
 seed = 7
 gaussian_var = 2.5
 
@@ -21,3 +21,10 @@ stdev_list = np.arange(0.1, 3, 0.1)
 L_km = 10
 D_ps_nm_km = 17
 lambda0_nm = 1550
+
+
+# for non linearities
+avg_power_mW = 1.0
+alpha_db_km = 1.0
+gamma_W_km = 1.3
+num_steps = 100
