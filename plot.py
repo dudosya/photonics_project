@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from utils import *
 
-def plot_NRZ_waveform(waveform):
+def plot_NRZ_waveform(waveform,samples_per_bit):
     plt.grid(True)
     plt.xlabel("Samples") 
     plt.ylabel("Amplitude")
-    plt.title("NRZ waveform at the receiver")
-    plt.plot(waveform)
+    plt.title("NRZ waveform at the receiver (last 10 bits)")
+    plt.plot(waveform[-10*samples_per_bit:])
     plt.show()
     
 
